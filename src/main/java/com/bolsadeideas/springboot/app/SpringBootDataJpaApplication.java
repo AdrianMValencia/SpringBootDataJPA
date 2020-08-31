@@ -6,21 +6,30 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.bolsadeideas.springboot.app.models.service.IUploadFileService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
 public class SpringBootDataJpaApplication implements CommandLineRunner {
 
-	@Autowired
-	IUploadFileService uploadFileService;
+    @Autowired
+    IUploadFileService uploadFileService;
 
-	public static void main(String[] args) {
-		SpringApplication.run(SpringBootDataJpaApplication.class, args);
-	}
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
-	@Override
-	public void run(String... args) throws Exception {
-		uploadFileService.deleteAll();
-		uploadFileService.init();
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(SpringBootDataJpaApplication.class, args);
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+        uploadFileService.deleteAll();
+        uploadFileService.init();
+        String password = "123456";
+        for (int i = 0; i < 2; i++) {
+            String bcryptPassword = passwordEncoder.encode(password);
+            System.out.println(bcryptPassword);
+        }
+    }
 
 }
